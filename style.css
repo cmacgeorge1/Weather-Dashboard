@@ -1,0 +1,13 @@
+.jumbotron {
+    border: solid 2px black;
+    text-align: center;
+}
+
+.container {
+    border: black solid 2px;
+}
+
+.row {
+    border: black solid 2px;
+    margin: 15px;
+}
