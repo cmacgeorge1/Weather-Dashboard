@@ -15,6 +15,16 @@ function forecast (cityName){
         method: "GET"
     }).then (function(apiData){
         console.log(apiData);
+        var lat = apiData.coord.lat
+        var lon = apiData.coord.lon
+        var uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`
+        $.ajax({
+            url: uvUrl,
+            method: "GET"
+        }).then (function(uvData){
+            console.log(uvData)
+            $("#uvIndex").append("UV Index"+uvData.value)
+        })
         $("#currentData").html(`
         <div class='card'>
         <h6>City: ${apiData.name}</h6>
@@ -22,7 +32,7 @@ function forecast (cityName){
         <p>Temp: ${apiData.main.temp}</p>
         <p>Temp: ${apiData.main.humidity}</p>
         <p>Speed: ${apiData.wind.speed}</p>
-        <img src="http://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
+        <img src="https://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
         `)
     })
 }
@@ -43,7 +53,7 @@ function fiveDayForecast (cityName){
         <p>Temp: ${apiData.list[i].main.temp}</p>
         <p>Temp: ${apiData.list[i].main.humidity}</p>
         <p>Speed: ${apiData.list[i].wind.speed}</p>
-        <img src="http://openweathermap.org/img/wn/${apiData.list[i].weather[0].icon}.png" />
+        <img src="https://openweathermap.org/img/wn/${apiData.list[i].weather[0].icon}.png" />
         `
         }
         $("#fiveDayData").html(htmlString)
