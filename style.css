@@ -3,11 +3,26 @@
     text-align: center;
 }
 
-.container {
+/* .container {
     border: black solid 2px;
-}
+} */
 
 .row {
-    border: black solid 2px;
+    /* border: black solid 2px; */
     margin: 15px;
+    padding: 10px;
+    /* height: 60%; */
+}
+
+#current {
+    width: 100%;
+    display: inline;
+}
+
+#outlook {
+    background-color: blue;
+    color: white;
+    float: inline-start;
+    display: inline;
+    padding: 10px;
 }

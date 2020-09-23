@@ -7,7 +7,7 @@ $("#searchBtn").on("click", function(event) {
     forecast(cityName);
     fiveDayForecast(cityName)
 })
-
+// Entered city forecast
 function forecast (cityName){
     var queryUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`
     $.ajax({
@@ -26,17 +26,17 @@ function forecast (cityName){
             $("#uvIndex").append("UV Index"+uvData.value)
         })
         $("#currentData").html(`
-        <div class='card'>
-        <h6>City: ${apiData.name}</h6>
+        <div class='card' id='current'>
+        <img src="https://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
+        <h5>City: ${apiData.name}</h5>
         <p>Weather: ${apiData.weather[0].description}</p>
         <p>Temp: ${apiData.main.temp}</p>
-        <p>Temp: ${apiData.main.humidity}</p>
-        <p>Speed: ${apiData.wind.speed}</p>
-        <img src="https://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
+        <p>Humidity: ${apiData.main.humidity}</p>
+        <p>Wind Speed: ${apiData.wind.speed}</p>
         `)
     })
 }
-
+// Five day forecast
 function fiveDayForecast (cityName){
     var queryUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`
     $.ajax({
@@ -47,13 +47,13 @@ function fiveDayForecast (cityName){
         var htmlString = "";
         for (let i=0; i<apiData.list.length; i=i+8) {
             htmlString += `
-        <div class='card'>
+        <div class='card' id='outlook'>
         <h6>Date: ${apiData.list[i].dt_txt}</h6>
+        <img src="https://openweathermap.org/img/wn/${apiData.list[i].weather[0].icon}.png" />
         <p>Weather: ${apiData.list[i].weather[0].description}</p>
         <p>Temp: ${apiData.list[i].main.temp}</p>
-        <p>Temp: ${apiData.list[i].main.humidity}</p>
+        <p>Humidity: ${apiData.list[i].main.humidity}</p>
         <p>Speed: ${apiData.list[i].wind.speed}</p>
-        <img src="https://openweathermap.org/img/wn/${apiData.list[i].weather[0].icon}.png" />
         `
         }
         $("#fiveDayData").html(htmlString)
