@@ -19,10 +19,20 @@
     display: inline;
 }
 
-#outlook {
+.outlook {
     background-color: blue;
     color: white;
-    float: inline-start;
-    display: inline;
-    padding: 10px;
+    /* float: inline-start; */
+    /* display: inline; */
+    padding: 5%;
+    margin: 5%;
+}
+
+#currentForecast {
+    border: black solid 1px;
+}
+
+#uvIndex {
+    width: 20%;
+
 }

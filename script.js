@@ -8,6 +8,7 @@ $("#searchBtn").on("click", function(event) {
     console.log(cityName); 
     userSearch.push(cityName)
     localStorage.setItem("citySearch", JSON.stringify(userSearch))
+    previousSearch();
     forecast(cityName);
     fiveDayForecast(cityName)
 })
@@ -27,14 +28,21 @@ function forecast (cityName){
             method: "GET"
         }).then (function(uvData){
             console.log(uvData)
-            $("#uvIndex").append("UV Index"+uvData.value)
+            $("#uvIndex").html("UV Index"+uvData.value)
+            if (uvData.value < 3){
+                $("#uvIndex").addClass("bg-success")
+            } else if (uvData.value < 7){
+                $("#uvIndex").addClass("bg-warning")
+            } else {
+                $("#uvIndex").addClass("bg-danger")
+            }
         })
         $("#currentData").html(`
         <div class='card' id='current'>
-        <img src="https://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
-        <h5>City: ${apiData.name}</h5>
+        <h5 class="card-title">City: ${apiData.name}</h5>
         <p>Weather: ${apiData.weather[0].description}</p>
         <p>Temp: ${apiData.main.temp}</p>
+        <img src="https://openweathermap.org/img/wn/${apiData.weather[0].icon}.png" />
         <p>Humidity: ${apiData.main.humidity}</p>
         <p>Wind Speed: ${apiData.wind.speed}</p>
         `)
@@ -51,19 +59,20 @@ function fiveDayForecast (cityName){
         var htmlString = "";
         for (let i=0; i<apiData.list.length; i=i+8) {
             htmlString += `
-        <div class='card' id='outlook'>
+        <div class="card outlook">
         <h6>Date: ${apiData.list[i].dt_txt}</h6>
         <img src="https://openweathermap.org/img/wn/${apiData.list[i].weather[0].icon}.png" />
         <p>Weather: ${apiData.list[i].weather[0].description}</p>
         <p>Temp: ${apiData.list[i].main.temp}</p>
         <p>Humidity: ${apiData.list[i].main.humidity}</p>
-        <p>Speed: ${apiData.list[i].wind.speed}</p>
+        <p>Speed: ${apiData.list[i].wind.speed}</p></div>
         `
         }
         $("#fiveDayData").html(htmlString)
     })
 }
 
+// 
 function previousSearch (){
     var htmlCode = "";
     for (let i =0; i < userSearch.length; i++) {
@@ -71,4 +80,12 @@ function previousSearch (){
     } 
     $("#searchHistory").html(htmlCode)
 }
-
+// Adding click event to search history buttons (event button)
+$("#searchHistory").on("click", ".previousSearch", function(event){
+    event.preventDefault()
+    var cityName = $(this).attr("data-name")
+    console.log(cityName)
+    // calling five day and forecast so they populate when button is clicked
+    fiveDayForecast(cityName)
+    forecast(cityName)
+})
