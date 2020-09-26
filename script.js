@@ -1,9 +1,13 @@
 var apiKey = "e9113e6691f059434468dd7f865dc140"
+var userSearch = JSON.parse(localStorage.getItem("citySearch")) || [];
+previousSearch();
 
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
     var cityName = $("#cityName").val();
     console.log(cityName); 
+    userSearch.push(cityName)
+    localStorage.setItem("citySearch", JSON.stringify(userSearch))
     forecast(cityName);
     fiveDayForecast(cityName)
 })
@@ -58,5 +62,13 @@ function fiveDayForecast (cityName){
         }
         $("#fiveDayData").html(htmlString)
     })
+}
+
+function previousSearch (){
+    var htmlCode = "";
+    for (let i =0; i < userSearch.length; i++) {
+        htmlCode += `<p><button class="btn btn-primary previousSearch" data-name = "${userSearch[i]}">${userSearch[i]}</button></p> `
+    } 
+    $("#searchHistory").html(htmlCode)
 }
 
